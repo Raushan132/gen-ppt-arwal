@@ -1,33 +1,34 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import FirstForm from './components/FirstForm';
+import SecondForm from './components/SecondForm';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const[facility,setFacility] = useState([]);
+  
+  
+  const addFacility = ()=>{
+    setFacility(prev=>[...prev,facility.length]);
+  }
+  console.log(facility)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='bg-black text-white md:px-16  py-10 min-h-screen'>
+        <div className='flex flex-col  items-center gap-2'>
+          <FirstForm />
+          {facility.map((val,index)=>{
+               return <SecondForm key={index} id={val}/>
+              
+          })}
+         
+        </div>
+        <div className='flex justify-end md:px-16 px-2'>
+           <div onClick={addFacility} className='w-10 h-10 flex justify-center items-center rounded-full bg-blue-400 text-2xl font-extrabold cursor-pointer'>+</div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+
     </>
   )
 }
