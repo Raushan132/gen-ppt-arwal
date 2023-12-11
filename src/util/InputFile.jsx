@@ -1,13 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageToBase64 from './ImageToBase64';
+import { useDispatch} from 'react-redux';
+import { addImages } from '../store/slices/SchoolSlice';
 
-const InputFile = () => {
+const InputFile = ({id,isPres,imgId}) => {
+
     const [file,setFile] = useState('');
+    const dispatch = useDispatch();
+
+    
 
     const handleData = (e) => {
         if (e.target.files.length < 1) return;
         ImageToBase64(e.target.files[0]).then(data => setFile(data));
       }
+
+  useEffect(()=>{
+    
+    console.log("img dispatch")
+    if(file==='') return;
+     dispatch(addImages({id,isPres,imgId,file}))
+
+  },[file])
     
   return (
       <>
