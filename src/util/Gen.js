@@ -3,6 +3,7 @@ import moment from "moment";
 
 import { useState } from "react";
 import DateFormat from "./DateFormat";
+import Dimension from "./Dimension";
 
 
 
@@ -16,7 +17,8 @@ const Gen = (data) => {
 
 
   const pptx = new PptxGenJS();
-  pptx.defineLayout({ name: "custom", width: 13.3, height: 7.5 });
+  // pptx.defineLayout({ name: "custom", width: 13.3, height: 7.5 });
+  pptx.defineLayout({ name: "custom", width: 10, height: 7.5 });
   pptx.layout = "custom"
 
 
@@ -65,13 +67,13 @@ const Gen = (data) => {
   data.facilities.map((facility) => {
 
     const slide = pptx.addSlide();
-    slide.addText("VISIBLE CHANGE", {
+    slide.addText( facility.day===0?"VISIBLE CHANGE":"", {
       shape: pptx.ShapeType.roundRect,
-      w: 12.5,
+      w: 9,
       h: 0.8,
       x: 0.5,
       y: 0.1,
-      fontSize: 36,
+      fontSize: 28,
       bold: true,
       fill: { color: '#953735' },
       align: "center",
@@ -82,7 +84,7 @@ const Gen = (data) => {
       shape: pptx.ShapeType.rect,
       w: 2.6,
       h: 0.3,
-      x: 10,
+      x: 6.8,
       y: 0.6,
       fontSize: 18,
       bold: true,
@@ -124,7 +126,7 @@ const Gen = (data) => {
       })
 
       slide.addText("Present", {
-        x: 8.5,
+        x: 6,
         y: 1.9,
         w: 3,
         h: 0.2,
@@ -134,7 +136,7 @@ const Gen = (data) => {
       })
 
       slide.addText(DateFormat(presentDate), {
-        x: 8.5,
+        x: 6,
         y: 2.2,
         w: 3,
         h: 0.2,
@@ -148,7 +150,7 @@ const Gen = (data) => {
     else {
 
       slide.addText("Present", {
-        x: 5.5,
+        x: 4.5,
         y: 1.9,
         w: 3,
         h: 0.2,
@@ -158,7 +160,7 @@ const Gen = (data) => {
       })
 
       slide.addText(DateFormat(facility.day === 1 ? presentDate : prevDate), {
-        x: 5.5,
+        x: 4.5,
         y: 2.2,
         w: 3,
         h: 0.2,
@@ -173,35 +175,41 @@ const Gen = (data) => {
     //If Both days are available for image then
 
     let len = facility.prevImg.length;
-    let yAxis= 2.6;
+    let yAxis= 2.4;
+    
   
     let count =0;
     facility.prevImg.map(img => {
+
+      const dimension = Dimension(facility.bothDays,2,len,count,yAxis)
+      
       yAxis+= ((4.5/len) * count)+0.1;
       count=count===0?1:1;
       slide.addImage({
         data: img.file,
-        x: 0.5,
-        y: yAxis,
-        w: 5.6,
-        h: 4.5/len,
+        x: dimension.x,    // x: 0.5,
+        y: dimension.y,    // y: yAxis,
+        w: dimension.w,    // w: 5.6,
+        h: dimension.h,    // h: 4.5/len,
       })
 
     })
 
     count=0;
-    yAxis=2.6;
-    len = facility.prevImg.length;
+    yAxis=2.4;
+    len = facility.presImg.length;
+    console.log(len)
     
     facility.presImg.map(img=>{
-      yAxis+=((4.5/len)* count)+0.1;
+      const dimension = Dimension(facility.bothDays,1,len,count,yAxis)
+      // yAxis+=((4.5/len)* count)+0.1;
       count = count===0?1:1
       slide.addImage({
       data: img.file,
-      x: 7,
-      y: yAxis,
-      w: 5.6,
-      h: 4.5/len,
+        x: dimension.x,        // x: 7,
+        y: dimension.y,       // y: yAxis,
+        w: dimension.w,        // w: 5.6,
+        h: dimension.h,        // h: 4.5/len,
     })
 
     })
