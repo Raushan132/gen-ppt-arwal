@@ -4,6 +4,7 @@ import moment from "moment";
 import { useState } from "react";
 import DateFormat from "./DateFormat";
 import Dimension from "./Dimension";
+import addTabletoSlide from "./addTableToSlide";
 
 
 
@@ -60,6 +61,10 @@ const Gen = (data) => {
   //   align: "center"
   // })
 
+  //slide for attendance
+  // let attendanceSlide = pptx.addSlide();
+  // const table = addTabletoSlide()
+  // attendanceSlide.addTable(table.tableData, table.tableOpts)
 
 
   //slide for classroom
@@ -202,7 +207,7 @@ const Gen = (data) => {
     
     facility.presImg.map(img=>{
       const dimension = Dimension(facility.bothDays,1,len,count,yAxis)
-      // yAxis+=((4.5/len)* count)+0.1;
+      yAxis+=((4.5/len)* count)+0.1;
       count = count===0?1:1
       slide.addImage({
       data: img.file,
@@ -232,10 +237,10 @@ const Gen = (data) => {
 
 
 
-
+    
   })
 
-
+  
   pptx.writeFile({ fileName: `${schoolName}.pptx` });
 }
 
